@@ -1,0 +1,119 @@
+Class User.Presentation Extends %RegisteredObject
+{
+
+  // do ##class(User.Presentation).menu()
+
+  ClassMethod opcao1CalculaImposto(salario)
+  {
+    if (salario < 500) {
+      set imposto = (5/100) * salario
+    }	
+    elseif (salario <= 850)
+    {
+      set imposto = (10/100) * salario	
+    }
+    else
+    {
+      set imposto = (15/100) * salario	
+    }
+    write !, !, "Imposto sobre o salário de: R$", salario, " = R$", $JUSTIFY(imposto, 0, 2)
+  }
+
+  ClassMethod opcao2CalculaNovoSalario(salario)
+  {
+    write !
+    if (salario < 450)
+    {
+      write !, !, "Aumento de R$100,00, salário atual: R$", (salario + 100), !
+    }
+    elseif (salario < 750)
+    {
+      write !, !, "Aumento de R$75,00, salário atual: R$", (salario + 75), !
+    }
+    elseif (salario <= 1500)
+    {
+      write !, !, "Aumento de R$50,00, salário atual: R$", (salario + 50), !
+    }
+    else 
+    {
+      write !, !, "Aumento de R$25,00, salário atual: R$", (salario + 25), !
+    }
+  }
+
+  ClassMethod opcao3ClassificaFuncionario(salario)
+  {
+    write !
+    if (salario <= 700)
+    {
+      write !, !, "Mal remunerado", !
+    }
+    else 
+    {
+      write !, !, "Bem remunerado", !
+    }
+  }
+
+  ClassMethod isNumber(num) As %Boolean
+  {
+    return ((num/1 = num) && (num > 0))
+  }
+
+  ClassMethod menu()
+  {
+    while(1)
+    {
+      write !, !, "======================================"
+      write !, "=	    Menu de opções:	     ="
+      write !, "= 1. Imposto                         ="
+      write !, "= 2. Novo salário                    ="
+      write !, "= 3. Classificação                   ="
+      write !, "= 0. Sair                            ="
+      write !, "======================================"
+      read !, !, "Digite a opção desejada: ", opcao
+      if (opcao = 1)
+      {
+        read !, !, "Digite o valor do salário: ",salario
+        if (..isNumber(salario))
+        {
+          do ..opcao1CalculaImposto(salario)
+        }
+        else
+        {
+          write !, !, "'", salario, "'", " não é um valor válido, digite um número maior que 0!!", !
+        }
+      }
+      elseif (opcao = 2)
+      {
+        read !, !, "Digite o valor do salário atual: ",salario
+        if (..isNumber(salario))
+        {
+          do ..opcao2CalculaNovoSalario(salario)
+        }
+        else
+        {
+          write !, !, "'", salario, "'", " não é um valor válido, digite um número maior que 0!!", !	
+        }
+      }
+      elseif (opcao = 3)
+      {
+        read !, !, "Digite o salário: ", salario
+        if (..isNumber(salario))
+        {
+          do ..opcao3ClassificaFuncionario(salario)
+        }
+        else
+        {
+          write !, !, "'", salario, "'", " não é um valor válido, digite um número maior que 0!!", !	
+        }
+      }
+      elseif (opcao = 0)
+      {
+        break
+      }
+      else
+      {
+        write !, !, "Opção inválida!!", !, !
+      }
+    }
+  }
+}
